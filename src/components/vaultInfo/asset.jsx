@@ -2166,17 +2166,19 @@ class Asset extends Component {
         const balance = asset.strategyBalance;
         const decimals = asset.decimals;
         const priceInUsd = asset.depositedSharesInUSD;
+        const selectedTokenPriceInUSD  = asset.priceInUSD[this.state.withdrawTokenIndex];
+        
+        let shareAmount;
+        shareAmount = (balance * percent) / 100;
+        shareAmount = Math.floor((shareAmount / 10 ** decimals) * 10000) / 10000;
 
-        let amount;
-
-        amount = (balance * percent) / 100;
-        amount = Math.floor((amount / 10 ** decimals) * 10000) / 10000;
-
+        let redeemAmountInUsd = ((priceInUsd * percent / 100) / selectedTokenPriceInUSD).toFixed(4)
+       
         this.setState({
-            redeemAmount: amount.toFixed(4),
+            redeemAmount: shareAmount.toFixed(4),
             // redeemCoins: ,
             redeemAmountPercent: percent,
-            redeemAmountInUsd: (priceInUsd * percent / 100).toFixed(4),
+            redeemAmountInUsd,
             redeemAmountError: false,
             withdrawErrorMessage: "",
         });
